@@ -15,7 +15,7 @@ sudo rm -rf /var/www/html/*
 # Clonar y configurar la aplicación web
 cd /var/www/html
 sudo dnf install -y git
-sudo git clone https://github.com/ferminromero00/TAREA_INSTANCIAS.git
+sudo git clone https://github.com/ferminromero00/EC2-S3-TAREA.git
 sudo mv TAREA_INSTANCIAS/php/* .
 sudo rm -r TAREA_INSTANCIAS/
 

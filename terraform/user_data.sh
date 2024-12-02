@@ -16,8 +16,8 @@ sudo rm -rf /var/www/html/*
 cd /var/www/html
 sudo dnf install -y git
 sudo git clone https://github.com/ferminromero00/EC2-S3-TAREA.git
-sudo mv TAREA_INSTANCIAS/php/* .
-sudo rm -r TAREA_INSTANCIAS/
+sudo mv EC2-S3-TAREA/php/* .
+sudo rm -r EC2-S3-TAREA/
 
 # Configurar permisos
 sudo chown -R apache:apache /var/www/html

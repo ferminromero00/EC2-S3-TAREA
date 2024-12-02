@@ -2,7 +2,8 @@
 
 /**
  * Registra un nuevo usuario.
- *
+ *TEXTO DEMOSTRACION QUE FUNCIONA LA DOCUMENTACION
+ * 
  * @param string $usuario El nombre de usuario.
  * @param string $contraseña La contraseña del usuario.
  * @return bool True si el registro fue exitoso, false en caso contrario.

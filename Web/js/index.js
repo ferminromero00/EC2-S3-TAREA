@@ -6,6 +6,7 @@ let currentImage = 0;
 /**
  * Cambia la imagen actual del carrusel a la siguiente.
  * Remueve la clase 'active' de la imagen actual y la aplica a la siguiente imagen.
+ * TEXTO DEMOSTRACION QUE FUNCIONA LA DOCUMENTACION
  */
 function changeImage() {
     images[currentImage].classList.remove('active');

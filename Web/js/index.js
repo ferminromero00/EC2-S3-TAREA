@@ -152,18 +152,18 @@ document.getElementById("language-selector").addEventListener("change", (event) 
 
 // Establecer el idioma predeterminado al cargar la página
 window.addEventListener("DOMContentLoaded", () => {
-    const savedLanguage = localStorage.getItem("language") || "es"; // Leer el idioma guardado o español por defecto
-    changeLanguage(savedLanguage);
+    // Obtener el idioma guardado
+    const savedLanguage = localStorage.getItem("language");
+    // Detectar el idioma del navegador
+    const browserLanguage = navigator.language.slice(0, 2); // Obtener 'es', 'en', etc.
+    // Definir el idioma predeterminado
+    const defaultLanguage = savedLanguage || (browserLanguage in translations ? browserLanguage : "es"); // Español si no está soportado
+
+    // Cambiar al idioma detectado o guardado
+    changeLanguage(defaultLanguage);
 
     // Establecer el selector de idioma en la opción correcta
-    document.getElementById("language-selector").value = savedLanguage;
+    document.getElementById("language-selector").value = defaultLanguage;
 });
 
-// Aplicar el tema guardado desde localStorage al cargar la página
-window.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("theme") || "light"; // Tema predeterminado: claro
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-theme");
-        document.getElementById("theme-toggle").textContent = "☀️"; // Cambiar el icono a sol
-    }
-});
+

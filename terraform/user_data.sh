@@ -58,11 +58,13 @@ sudo usermod -a -G docker ec2-user
 sudo mkdir docs
 sudo docker run --rm -v "$(pwd)":/app -w /app phpdoc/phpdoc -d . -t ./docs
 
+# Crear el directorio para el nuevo sitio virtual y agregar un archivo index.html básico
+
 sudo mkdir -p /var/www/prueba321321.com/public && echo "<html><head><title>Bienvenido</title></head><body><h1>Bienvenido a mi sitio virtual</h1></body></html>" | sudo tee /var/www/prueba321321.com/public/index.html
 sudo chown -R apache:apache /var/www/prueba321321.com
 sudo chmod -R 755 /var/www/prueba321321.com
 
-
+# Crear un archivo de configuración para el VirtualHost de Apache
 echo -e "<VirtualHost *:80>\n\
     ServerName prueba321321.com\n\
     ServerAlias www.prueba321321.com\n\
@@ -76,10 +78,13 @@ echo -e "<VirtualHost *:80>\n\
 </VirtualHost>" | sudo tee /etc/httpd/conf.d/mi-sitio.conf
 
 #Se tendria que cambiar automaticamente pero no encuentro como
+# Agregar la IP del servidor al archivo hosts para resolver el dominio localmente
 echo "54.157.197.117  prueba321321.com www.prueba321321.com" | sudo tee -a /etc/hosts
+# Hacer que sitio virtual escuche por el puerto 80
 echo -e "Listen 80" | sudo tee -a /etc/httpd/conf/httpd.conf > /dev/null
 
-#Espacio usuarios
+
+# Crear una configuración para habilitar directorios de usuarios
 sudo echo -e "<IfModule mod_userdir.c>\n\
     UserDir /var/www/php/*/public_html\n\
     <Directory /var/www/php/*/public_html>\n\
@@ -89,19 +94,36 @@ sudo echo -e "<IfModule mod_userdir.c>\n\
     </Directory>\n\
 </IfModule>" | sudo tee /etc/httpd/conf.d/userdir.conf > /dev/null
 
+# Crear un espacio de usuario para el usuario 'ec2-user'
 sudo mkdir -p /var/www/php/ec2-user/public_html
+
+# Cambiar la propiedad del directorio al usuario 'ec2-user', Le damos sus permisos
 sudo chown -R ec2-user:ec2-user /var/www/php/ec2-user/public_html
+
+# Establecer permisos para el directorio público del usuario
 sudo chmod -R 755 /var/www/php/ec2-user/public_html
+
+#Creacion del html del index del usuario
 echo "<html><body><h1>¡Hola desde el espacio de usuario de ec2-user en /var/www/php</h1></body></html>" > /var/www/php/ec2-user/public_html/index.html
 
 #Autentificacion de usuarios
+
+# Habilitar el módulo de autenticación básica de Apache
 sudo echo "LoadModule auth_basic_module modules/mod_auth_basic.so" | sudo tee -a /etc/httpd/conf/httpd.conf > /dev/null
+
+# Cambiar la propiedad y permisos del directorio base de usuarios
 sudo chown -R apache:apache /var/www/php
 sudo chmod -R 755 /var/www/php
+
+# Crear un archivo de contraseñas y agregar el usuario 'ec2-user'
 echo "ejemplo1234" | sudo htpasswd -ci /etc/httpd/.htpasswd ec2-user
 sudo chmod 644 /etc/httpd/.htpasswd
 sudo chown root:root /etc/httpd/.htpasswd
+
+#Creacion del html
 echo "<html><body><h1>Página Protegida</h1><p>Si puedes ver esto, te has autenticado correctamente.</p></body></html>" | sudo tee /var/www/php/ec2-user/public_html/index.html
+
+# Crear un archivo .htaccess para proteger el directorio público del usuario con autenticación básica
 echo -e "AuthType Basic\nAuthName \"Área Restringida\"\nAuthUserFile /etc/httpd/.htpasswd\nRequire valid-user" | sudo tee /var/www/php/ec2-user/public_html/.htaccess
 
 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Limpieza Pro</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 id="title-header">Limpieza Pro</h1>
+            <nav>
+                <ul>
+                    <li><a href="#inicio" id="home">Inicio</a></li>
+                    <li><a href="#servicios" id="services">Servicios</a></li>
+                    <li><a href="#contacto" id="contact">Contacto</a></li>
+                    <li><a href="docs/global.html" target="_blank" id="documentation">Documentación</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio">
+            <div id="carousel">
+                <img src="img/img1.jpg" alt="Imagen 1" class="active">
+                <img src="img/img2.jpg" alt="Imagen 2">
+                <img src="img/img3.jpg" alt="Imagen 3">
+            </div>
+        </section>
+
+        <section id="servicios" class="container">
+            <h2 id="our-services">Nuestros Servicios</h2>
+            <div class="services">
+                <div class="service">
+                    <h3 id="residential-cleaning">Limpieza Residencial</h3>
+                    <p id="residential-cleaning-desc">Mantenemos tu hogar impecable y acogedor.</p>
+                </div>
+                <div class="service">
+                    <h3 id="commercial-cleaning">Limpieza Comercial</h3>
+                    <p id="commercial-cleaning-desc">Servicios de limpieza para oficinas y negocios.</p>
+                </div>
+                <div class="service">
+                    <h3 id="specialized-cleaning">Limpieza Especializada</h3>
+                    <p id="specialized-cleaning-desc">Limpieza profunda para ocasiones especiales.</p>
+                </div>
+                <div class="service">
+                    <h3 id="responsible-cleaning">Limpieza Responsable</h3>
+                    <p id="responsible-cleaning-desc">Nos encargaremos de que quedes satisfecho.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="container">
+            <h2 id="contact-us">Contáctanos</h2>
+            <form id="contact-form">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <textarea id="mensaje" name="mensaje" placeholder="Mensaje" required></textarea>
+                <button type="submit" id="send">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p id="footer">&copy; 2024 LimpiezaPro by Fermín. Todos los derechos reservados.</p>
+    </footer>
+
+    <button id="theme-toggle">🌙</button>
+    <select id="language-selector">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+    </select>
+    
+
+    <script src="js/index.js"></script>
+</body>
+
+</html>

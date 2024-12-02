@@ -1,71 +1,4 @@
-// Carrusel de imágenes
-const carousel = document.getElementById('carousel');
-const images = carousel.getElementsByTagName('img');
-let currentImage = 0;
-
-/**
- * Cambia la imagen actual del carrusel a la siguiente.
- * Remueve la clase 'active' de la imagen actual y la aplica a la siguiente imagen.
- * TEXTO DEMOSTRACION QUE FUNCIONA LA DOCUMENTACION
- */
-function changeImage() {
-    images[currentImage].classList.remove('active');
-    currentImage = (currentImage + 1) % images.length;
-    images[currentImage].classList.add('active');
-}
-
-// Cambia la imagen del carrusel cada 5 segundos
-setInterval(changeImage, 5000);
-
-// Formulario de contacto
-const form = document.getElementById('contact-form');
-
-/**
- * Maneja el envío del formulario de contacto.
- * Verifica que todos los campos estén llenos antes de mostrar un mensaje de confirmación
- * o una advertencia.
- * 
- * @param {Event} e - El evento de envío del formulario que recoge datos.
- */
-function handleFormSubmit(e) {
-    e.preventDefault();
-    const nombre = document.getElementById('nombre').value;
-    const email = document.getElementById('email').value;
-    const mensaje = document.getElementById('mensaje').value;
-
-    if (nombre && email && mensaje) {
-        alert('Gracias por contactarnos. Le responderemos pronto.');
-        form.reset();
-    } else {
-        alert('Por favor, rellene todos los campos');
-    }
-}
-
-// Añade el listener de envío al formulario de contacto
-form.addEventListener('submit', handleFormSubmit);
-
-// Cambio de tema
-const themeToggle = document.getElementById('theme-toggle');
-
-/**
- * Alterna entre el tema claro y oscuro de la página.
- * Cambia el texto del botón según el tema actual.
- */
-function toggleTheme() {
-    document.body.classList.toggle('dark-theme');
-    themeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
-
-    // Guardar la preferencia del tema en localStorage
-    localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-}
-
-// Añade el listener de clic para cambiar el tema
-themeToggle.addEventListener('click', toggleTheme);
-
-// Función para cambiar el idioma (puedes agregar más lógica aquí según sea necesario)
-const languageSelector = document.getElementById("language-selector");
-
-// JSON con los textos en varios idiomas
+// Translations object with all the text content
 const translations = {
     "es": {
         "title": "Limpieza Pro",
@@ -113,58 +46,188 @@ const translations = {
     }
 };
 
+// Carousel functionality
+class Carousel {
+    constructor() {
+        this.carousel = document.getElementById('carousel');
+        if (!this.carousel) return;
+        
+        this.images = this.carousel.getElementsByTagName('img');
+        this.currentImage = 0;
+        this.startCarousel();
+    }
 
-/**
- * Cambia el idioma de la página.
- * 
- * @param {string} lang - El código del idioma seleccionado.
- */
-function changeLanguage(lang) {
-    // Seleccionar los elementos por sus IDs
-    document.getElementById("title").textContent = translations[lang].title;
-    document.getElementById("title-header").textContent = translations[lang].title;
-    document.getElementById("home").textContent = translations[lang].home;
-    document.getElementById("services").textContent = translations[lang].services;
-    document.getElementById("contact").textContent = translations[lang].contact;
-    document.getElementById("documentation").textContent = translations[lang].documentation;
-    document.getElementById("our-services").textContent = translations[lang].our_services;
-    document.getElementById("residential-cleaning").textContent = translations[lang].residential_cleaning;
-    document.getElementById("residential-cleaning-desc").textContent = translations[lang].residential_cleaning_desc;
-    document.getElementById("commercial-cleaning").textContent = translations[lang].commercial_cleaning;
-    document.getElementById("commercial-cleaning-desc").textContent = translations[lang].commercial_cleaning_desc;
-    document.getElementById("specialized-cleaning").textContent = translations[lang].specialized_cleaning;
-    document.getElementById("specialized-cleaning-desc").textContent = translations[lang].specialized_cleaning_desc;
-    document.getElementById("responsible-cleaning").textContent = translations[lang].responsible_cleaning;
-    document.getElementById("responsible-cleaning-desc").textContent = translations[lang].responsible_cleaning_desc;
-    document.getElementById("contact-us").textContent = translations[lang].contact_us;
-    document.getElementById("nombre").placeholder = translations[lang].name_placeholder;
-    document.getElementById("email").placeholder = translations[lang].email_placeholder;
-    document.getElementById("mensaje").placeholder = translations[lang].message_placeholder;
-    document.getElementById("send").textContent = translations[lang].send;
-    document.getElementById("footer").innerHTML = translations[lang].footer;
+    changeImage() {
+        if (!this.images.length) return;
+        this.images[this.currentImage].classList.remove('active');
+        this.currentImage = (this.currentImage + 1) % this.images.length;
+        this.images[this.currentImage].classList.add('active');
+    }
+
+    startCarousel() {
+        if (this.images.length > 0) {
+            setInterval(() => this.changeImage(), 5000);
+        }
+    }
 }
 
-// Detectar el cambio en el selector de idioma
-document.getElementById("language-selector").addEventListener("change", (event) => {
-    const selectedLanguage = event.target.value;
-    changeLanguage(selectedLanguage);
-    localStorage.setItem("language", selectedLanguage);  // Guardamos el idioma en localStorage
+// Contact form functionality
+class ContactForm {
+    constructor() {
+        this.form = document.getElementById('contact-form');
+        if (this.form) {
+            this.setupEventListeners();
+        }
+    }
+
+    setupEventListeners() {
+        this.form.addEventListener('submit', this.handleFormSubmit.bind(this));
+    }
+
+    handleFormSubmit(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('nombre')?.value;
+        const email = document.getElementById('email')?.value;
+        const mensaje = document.getElementById('mensaje')?.value;
+
+        if (nombre && email && mensaje) {
+            alert('Gracias por contactarnos. Le responderemos pronto.');
+            this.form.reset();
+        } else {
+            alert('Por favor, rellene todos los campos');
+        }
+    }
+}
+
+// Theme manager functionality
+class ThemeManager {
+    constructor() {
+        this.themeToggle = document.getElementById('theme-toggle');
+        if (this.themeToggle) {
+            this.setupEventListeners();
+            this.loadSavedTheme();
+        }
+    }
+
+    setupEventListeners() {
+        this.themeToggle.addEventListener('click', () => this.toggleTheme());
+    }
+
+    toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        this.themeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    }
+
+    loadSavedTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            this.toggleTheme();
+        }
+    }
+}
+
+// Language manager functionality
+class LanguageManager {
+    constructor() {
+        this.languageSelector = document.getElementById('language-selector');
+        if (!this.languageSelector) return;
+
+        // Detectar y aplicar el idioma al cargar la página
+        this.detectAndSetLanguage();
+
+        // Configurar el evento de cambio en el selector
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        this.languageSelector.addEventListener('change', (event) => {
+            const selectedLanguage = event.target.value;
+            this.changeLanguage(selectedLanguage);
+            localStorage.setItem('language', selectedLanguage); // Guardar el idioma seleccionado
+        });
+    }
+
+    detectAndSetLanguage() {
+        const savedLanguage = localStorage.getItem('language'); // Obtener idioma guardado
+        const languageToApply = savedLanguage || this.detectBrowserLanguage(); // Usar guardado o detectar del navegador
+
+        this.changeLanguage(languageToApply);
+        this.languageSelector.value = languageToApply; // Sincronizar el selector con el idioma aplicado
+    }
+
+    detectBrowserLanguage() {
+        const browserLanguages = navigator.languages || [navigator.language || 'es'];
+        for (const lang of browserLanguages) {
+            const baseLang = lang.split('-')[0].toLowerCase();
+            if (translations[baseLang]) {
+                return baseLang;
+            }
+        }
+        return 'es'; // Idioma predeterminado
+    }
+
+    changeLanguage(lang) {
+        if (!translations[lang]) return;
+
+        const elements = {
+            title: document.getElementById('title'),
+            titleHeader: document.getElementById('title-header'),
+            home: document.getElementById('home'),
+            services: document.getElementById('services'),
+            contact: document.getElementById('contact'),
+            documentation: document.getElementById('documentation'),
+            ourServices: document.getElementById('our-services'),
+            residentialCleaning: document.getElementById('residential-cleaning'),
+            residentialCleaningDesc: document.getElementById('residential-cleaning-desc'),
+            commercialCleaning: document.getElementById('commercial-cleaning'),
+            commercialCleaningDesc: document.getElementById('commercial-cleaning-desc'),
+            specializedCleaning: document.getElementById('specialized-cleaning'),
+            specializedCleaningDesc: document.getElementById('specialized-cleaning-desc'),
+            responsibleCleaning: document.getElementById('responsible-cleaning'),
+            responsibleCleaningDesc: document.getElementById('responsible-cleaning-desc'),
+            contactUs: document.getElementById('contact-us'),
+            send: document.getElementById('send'),
+            footer: document.getElementById('footer'),
+            nombre: document.getElementById('nombre'),
+            email: document.getElementById('email'),
+            mensaje: document.getElementById('mensaje')
+        };
+
+        if (elements.title) elements.title.textContent = translations[lang].title;
+        if (elements.titleHeader) elements.titleHeader.textContent = translations[lang].title;
+        if (elements.home) elements.home.textContent = translations[lang].home;
+        if (elements.services) elements.services.textContent = translations[lang].services;
+        if (elements.contact) elements.contact.textContent = translations[lang].contact;
+        if (elements.documentation) elements.documentation.textContent = translations[lang].documentation;
+        if (elements.ourServices) elements.ourServices.textContent = translations[lang].our_services;
+        if (elements.residentialCleaning) elements.residentialCleaning.textContent = translations[lang].residential_cleaning;
+        if (elements.residentialCleaningDesc) elements.residentialCleaningDesc.textContent = translations[lang].residential_cleaning_desc;
+        if (elements.commercialCleaning) elements.commercialCleaning.textContent = translations[lang].commercial_cleaning;
+        if (elements.commercialCleaningDesc) elements.commercialCleaningDesc.textContent = translations[lang].commercial_cleaning_desc;
+        if (elements.specializedCleaning) elements.specializedCleaning.textContent = translations[lang].specialized_cleaning;
+        if (elements.specializedCleaningDesc) elements.specializedCleaningDesc.textContent = translations[lang].specialized_cleaning_desc;
+        if (elements.responsibleCleaning) elements.responsibleCleaning.textContent = translations[lang].responsible_cleaning;
+        if (elements.responsibleCleaningDesc) elements.responsibleCleaningDesc.textContent = translations[lang].responsible_cleaning_desc;
+        if (elements.contactUs) elements.contactUs.textContent = translations[lang].contact_us;
+        if (elements.send) elements.send.textContent = translations[lang].send;
+        if (elements.footer) elements.footer.innerHTML = translations[lang].footer;
+
+        // Actualizar los placeholders
+        if (elements.nombre) elements.nombre.placeholder = translations[lang].name_placeholder;
+        if (elements.email) elements.email.placeholder = translations[lang].email_placeholder;
+        if (elements.mensaje) elements.mensaje.placeholder = translations[lang].message_placeholder;
+    }
+}
+
+
+// Initialize all functionality when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new Carousel();
+    new ContactForm();
+    new ThemeManager();
+    new LanguageManager();
 });
 
-// Establecer el idioma predeterminado al cargar la página
-window.addEventListener("DOMContentLoaded", () => {
-    // Obtener el idioma guardado
-    const savedLanguage = localStorage.getItem("language");
-    // Detectar el idioma del navegador
-    const browserLanguage = navigator.language.slice(0, 2); // Obtener 'es', 'en', etc.
-    // Definir el idioma predeterminado
-    const defaultLanguage = savedLanguage || (browserLanguage in translations ? browserLanguage : "es"); // Español si no está soportado
-
-    // Cambiar al idioma detectado o guardado
-    changeLanguage(defaultLanguage);
-
-    // Establecer el selector de idioma en la opción correcta
-    document.getElementById("language-selector").value = defaultLanguage;
-});
-
-
+console.log("Idiomas del navegador:", navigator.languages);
+console.log("Idioma principal del navegador:", navigator.language);

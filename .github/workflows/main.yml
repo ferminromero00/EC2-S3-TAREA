@@ -27,7 +27,7 @@ jobs:
           extensions: mbstring, xml
           coverage: xdebug
 
-      - name: Ejecutar pruebas unitarias con PHPUnit con docker
+      - name: Ejecutar pruebas unitarias con PHPUnit
         run: |
           cd php/tests
           composer clear-cache

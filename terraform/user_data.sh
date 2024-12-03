@@ -28,7 +28,6 @@ sudo mv Herramientas/* ../
 
 # Cambiar el DocumentRoot a /var/www
 sudo sed -i 's|DocumentRoot "/var/www/html"|DocumentRoot "/var/www"|' /etc/httpd/conf/httpd.conf
-
 # Cambiar la sección <Directory> a /var/www
 sudo sed -i 's|<Directory "/var/www/html">|<Directory "/var/www">|' /etc/httpd/conf/httpd.conf
 
@@ -79,7 +78,7 @@ echo -e "<VirtualHost *:80>\n\
 
 #Se tendria que cambiar automaticamente pero no encuentro como
 # Agregar la IP del servidor al archivo hosts para resolver el dominio localmente
-echo "54.157.197.117  prueba321321.com www.prueba321321.com" | sudo tee -a /etc/hosts
+echo "3.83.232.45  prueba321321.com www.prueba321321.com" | sudo tee -a /etc/hosts
 # Hacer que sitio virtual escuche por el puerto 80
 echo -e "Listen 80" | sudo tee -a /etc/httpd/conf/httpd.conf > /dev/null
 
